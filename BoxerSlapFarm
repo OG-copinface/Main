@@ -5,7 +5,7 @@ loadstring(game:HttpGet('https://raw.githubusercontent.com/OG-copinface/Main/ref
 game:GetService("Players").LocalPlayer.OnTeleport:Connect(function(State)
 	if State == Enum.TeleportState.Started then
 		if queuetp then
-			queueteleport("loadstring(game:HttpGet('https://raw.githubusercontent.com/OG-copinface/Main/Source/farm')()")
+			queuetp("loadstring(game:HttpGet('https://raw.githubusercontent.com/OG-copinface/Main/Source/BoxerSlapFarm')()")
 		end
 	end
 end)
