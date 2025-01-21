@@ -114,7 +114,7 @@ for i,v in pairs(check_plr()) do
 game:GetService("Players").LocalPlayer.OnTeleport:Connect(function(State)
 	if State == Enum.TeleportState.Started then
 		if continue and queuetp then
-			queuetp("loadstring(game:HttpGet('https://raw.githubusercontent.com/OG-copinface/Main/Source/BoxerSlapFarm')()")
+			queuetp("loadstring(game:HttpGet('https://raw.githubusercontent.com/OG-copinface/Main/Source/BoxerSlapFarm'))()")
 		end
 	end
 end)
