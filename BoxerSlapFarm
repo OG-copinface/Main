@@ -31,13 +31,6 @@ function check_plr()
  end
     return plrs
 end
-game:GetService("Players").LocalPlayer.OnTeleport:Connect(function(State)
-	if State == Enum.TeleportState.Started then
-		if continue and queuetp then
-			queuetp("loadstring(game:HttpGet('https://raw.githubusercontent.com/OG-copinface/Main/Source/BoxerSlapFarm'))()")
-		end
-	end
-end)
 function TPReturner()
     local Site;
     if foundAnything == "" then
@@ -119,3 +112,11 @@ task.wait(4)
 Teleport()
 end
 until not game.Players.LocalPlayer.Character.Humanoid
+
+game:GetService("Players").LocalPlayer.OnTeleport:Connect(function(State)
+	if State == Enum.TeleportState.Started then
+		if continue and queuetp then
+			queuetp("loadstring(game:HttpGet('https://raw.githubusercontent.com/OG-copinface/Main/Source/BoxerSlapFarm'))()")
+		end
+	end
+end)
