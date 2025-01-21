@@ -1,8 +1,119 @@
 local queuetp = (syn and syn.queue_on_teleport) or queue_on_teleport or (fluxus and fluxus.queue_on_teleport)
+local continue = true
+local PlaceID = game.PlaceId
+local AllIDs = {}
+local foundAnything = ""
+local actualHour = os.date("!*t").hour
+local Deleted = false
+local Check = true
+local File = pcall(function()
+    AllIDs = game:GetService('HttpService'):JSONDecode(readfile("NotSameServers.json"))
+end)
+if not File then
+    table.insert(AllIDs, actualHour)
+    writefile("NotSameServers.json", game:GetService('HttpService'):JSONEncode(AllIDs))
+end
+function find_plr(name)
+ for i,v in pairs(getnilinstances()) do
+  if v.Name == name and v.ClassName == "Model" then
+   print("found")
+   return v
+  end
+ end
+end
+function check_plr()
+    local plrs = {}
+ for i,v in pairs(game.Players:GetChildren()) do
+  local plr = find_plr(v.Name)
+  if plr then
+   table.insert(plrs,plr)
+  end
+ end
+    return plrs
+end
+function TPReturner()
+    local Site;
+    if foundAnything == "" then
+        Site = game.HttpService:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. PlaceID .. '/servers/Public?sortOrder=Asc&limit=100'))
+    else
+        Site = game.HttpService:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. PlaceID .. '/servers/Public?sortOrder=Asc&limit=100&cursor=' .. foundAnything))
+    end
+    local ID = ""
+    if Site.nextPageCursor and Site.nextPageCursor ~= "null" and Site.nextPageCursor ~= nil then
+        foundAnything = Site.nextPageCursor
+    end
+    local num = 0;
+    for i,v in pairs(Site.data) do
+        local Possible = true
+        ID = tostring(v.id)
+        if tonumber(v.maxPlayers) > tonumber(v.playing) then
+            for _,Existing in pairs(AllIDs) do
+                if num ~= 0 then
+                    if ID == tostring(Existing) then
+                        Possible = false
+                    end
+                else
+                    if tonumber(actualHour) ~= tonumber(Existing) then
+                        local delFile = pcall(function()
+                            delfile("NotSameServers.json")
+                            AllIDs = {}
+                            table.insert(AllIDs, actualHour)
+                        end)
+                    end
+                end
+                num = num + 1
+            end
+            if Possible == true then
+                table.insert(AllIDs, ID)
+                wait()
+                pcall(function()
+                    writefile("NotSameServers.json", game:GetService('HttpService'):JSONEncode(AllIDs))
+                    wait()
+                    game:GetService("TeleportService"):TeleportToPlaceInstance(PlaceID, ID, game.Players.LocalPlayer)
+                end)
+                wait(4)
+            end
+        end
+    end
+end
+
+function Teleport()
+    while wait() do
+        pcall(function()
+            TPReturner()
+            if foundAnything ~= "" then
+                TPReturner()
+            end
+        end)
+    end
+end
+
+fireclickdetector(workspace.Lobby.Boxer.ClickDetector)
+wait(1)
+for i,v in pairs(check_plr()) do
+        if v then
+            local args = {[1] = v,[2] = false}
+            task.spawn(function()
+                while task.wait() do
+                Check = false
+                for i = 1, 1000 do
+                   task.spawn(function()
+                   task.wait(1)
+                          game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("Boxing"):FireServer(unpack(args))
+                   end)
+                end
+                if Check then
+                task.wait(3)
+                Teleport()
+                end
+                end
+            end)
+        end
+    end
 
 game:GetService("Players").LocalPlayer.OnTeleport:Connect(function(State)
 	if State == Enum.TeleportState.Started then
-		if queuetp then
+		if continue and queuetp then
 			queuetp("loadstring(game:HttpGet('https://raw.githubusercontent.com/OG-copinface/Main/Source/BoxerSlapFarm')()")
 		end
 	end
