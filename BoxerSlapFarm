@@ -108,12 +108,12 @@ for i,v in pairs(check_plr()) do
                    task.wait(1)
                           game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("Boxing"):FireServer(unpack(args))
                    end)
-                end
-                if not Check then
-                task.wait(10)
-                Teleport()
-                end
+		end
                 end
             end)
         end
     end
+if not Check then
+task.wait(10)
+Teleport()
+end
