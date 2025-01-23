@@ -97,7 +97,7 @@ for i,v in pairs(check_plr()) do
                 while task.wait() do
                 Check = false
                 for i = 1, 1000 do
-                   task.spawn(function()
+                   spawn(function()
                    task.wait(1)
                           game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("Boxing"):FireServer(unpack(args))
                    end)
@@ -108,7 +108,7 @@ for i,v in pairs(check_plr()) do
     end
 repeat wait()
 if not Check then
-task.wait(4)
+task.wait(3)
 Teleport()
 end
 until not game.Players.LocalPlayer.Character.Humanoid
@@ -116,7 +116,7 @@ until not game.Players.LocalPlayer.Character.Humanoid
 game:GetService("Players").LocalPlayer.OnTeleport:Connect(function(State)
 	if State == Enum.TeleportState.Started then
 		if continue and queuetp then
-			queuetp("loadstring(game:HttpGet('https://raw.githubusercontent.com/OG-copinface/Main/Source/BoxerSlapFarm'))()")
+			queuetp('loadstring(game:HttpGet("https://raw.githubusercontent.com/OG-copinface/Main/Source/BoxerSlapFarm"))()')
 		end
 	end
 end)
