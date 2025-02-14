@@ -115,7 +115,6 @@ for i,v in pairs(check_plr()) do
     end
 repeat wait()
 if not Check then
-wait(0.5)
 Teleport()
 end
 until not game.Players.LocalPlayer.Character.Humanoid
