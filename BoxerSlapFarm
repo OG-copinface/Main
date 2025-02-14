@@ -103,18 +103,19 @@ for i,v in pairs(check_plr()) do
             task.spawn(function()
                 check = false
                 while task.wait() do
-                for i = 1, 1000 do
-                   spawn(function()
-                   task.wait(1)
+                --for i = 1, 1000 do
+                   --spawn(function()
+                   --task.wait(1)
                           game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("Boxing"):FireServer(unpack(args))
-                   end)
-		end
+                   --end)
+		--end
                 end
             end)
         end
     end
 repeat wait()
 if not Check then
+wait(2)
 Teleport()
 end
 until not game.Players.LocalPlayer.Character.Humanoid
